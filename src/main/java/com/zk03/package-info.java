@@ -6,6 +6,8 @@ class Source{
 		//1.集群模式：
 		//启动脚本 zkServer.sh 
 		//QuorumPeerMain
+		//QuorumPeer
+		//FastLeaderElection
 		
 		//2.standalone
 		//ZooKeeperServerMain
