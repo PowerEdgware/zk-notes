@@ -233,9 +233,24 @@ QuorumPeer.makeFollower
 ```
 上述代码里follower的主要职责是与leader通信进行数据同步，也是接收leader的事务请求，本地事务日志，进行ack.接收leader事务的commit请求，执行事务提交。  
 另外一点，接收客户端的查询请求，转发事务请求等。具体接收客户端请求的逻辑在：  
-`ServerCnxnFactory`子类的`run`方法中，这里专门接收
+`ServerCnxnFactory`子类的`run`方法中，这里专门接收客户端请求  
 
+follower处理链路：  
+`FollowerRequestProcessor->CommitProcessor->FinalRequestProcessor`  
+同步链路 ：  
+`SyncRequestProcessor->SendAckRequestProcessor`  
 
+* Leader领导集群  
+`leader.lead()`这里会进入死循环。  
+
+leader首先启动一个监听服务，用于follower/observer 连接过来做数据同步和proposal通信。  
+监听器： `LearnerCnxAcceptor` 用于接收follower连接请求，数据通信。  
+
+启动leader服务：   
+构建leader处理链路：`PrepRequestProcessor->ProposalRequestProcessor->CommitProcessor->ToBeAppliedRequestProcessor->FinalRequestProcessor`  
+设置Leader服务器状态为：`State.RUNNING` 此时可以正常接收客户端请求。  
+
+至此集群版zk启动完毕，选举完毕，数据同步完毕。leader和follower一切准备就绪，开始接收客户端的请求。下面一章节分析客户端请求CRUD对应的服务端的处理流程。 
 
 
 
