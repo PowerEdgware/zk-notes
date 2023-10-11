@@ -8,7 +8,7 @@
 
 	<properties>
 		<zk.version>3.5.5</zk.version>
-		<zk.version.low>3.4.14</zk.version.low>
+		<zk.version.low>3.7.2</zk.version.low>
 	</properties>
 	<dependencies>
 		<dependency>
